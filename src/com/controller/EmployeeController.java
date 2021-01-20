@@ -276,6 +276,55 @@ public class EmployeeController {
         Map<Integer, List<Employee>> peopleByAge = employeeList.stream()
                 .collect(Collectors.groupingBy(Employee::getAge));
         peopleByAge.forEach((k,v)-> System.out.println((k + ":" + v)));
+        
+        List<User> users = store();
+		
+		//Converting into list of string
+		List<String> names = users.stream()
+				.map(User::getName)
+				.map(String::toUpperCase)
+				.collect(Collectors.toList());
+		System.out.println(names);
+		
+		//Converting into Set of Integer
+		Set<Integer> ages = users.stream()
+				.map(User::getAge)
+				.collect(Collectors.toSet());
+		System.out.println(ages);
+		
+		//Converting into Any Collection Object
+		TreeSet<Integer> sortedAge = users.stream()
+				.map(User::getAge)
+				.collect(Collectors.toCollection(TreeSet::new));
+		System.out.println(sortedAge);
+		
+		// Converting into map - Age By Total Users name
+		Map<Integer, String> ageByTotalUsers = users.stream()
+		.collect(Collectors.toMap(User::getAge, User::getName, (s1,s2) -> s1+", "+s2));
+		System.out.println(ageByTotalUsers);
+		
+		// Converting list to into map 
+		Map<Integer, User> collectUser = users.stream()
+		.collect(Collectors.toMap(User::getId, user->user));
+		System.out.println(collectUser);
+		
+		// Converting List to String
+		String userNames = users.stream()
+				.map(User::getName)
+				.collect(Collectors.joining(","));
+		System.out.println(userNames);
+		
+		// Grouping by - according to age.
+		Map<Integer, List<User>> ageByUser = users.stream()
+				.collect(Collectors.groupingBy(User::getAge));
+		System.out.println(ageByUser);
+		
+		// IntSummaryStatistics in collectors
+		IntSummaryStatistics summaryStatics = users.stream()
+		.collect(Collectors.summarizingInt(User::getAge));
+		System.out.println(summaryStatics);
+        
+        
     }
 
     // 13. Optional<T> min(Comparator<? super T> comparator)
@@ -502,9 +551,18 @@ public class EmployeeController {
         for (Department department : departmentList) {
             System.out.println(department.getName());
         }
-
     }
-
+    private static List<User> store() {
+		List<User> users = new ArrayList<>();
+		users.add(new User(1,"Vikash",28));
+		users.add(new User(2,"Dinesh",24));
+		users.add(new User(3,"Ankit",25));
+		users.add(new User(4,"Rajesh",22));
+		users.add(new User(5,"Vinodh",22));
+		users.add(new User(6,"Suresh",18));
+		users.add(new User(7,"Satish",15));
+		return users;
+	}
 
     /*
     * Some question to solve it.
